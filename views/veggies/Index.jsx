@@ -13,6 +13,8 @@ function Index({ vegetables }) {
                 </li>
             )
         })}
+        <br/><br/>
+        <a href="/fruits">Go To The Fruits Page</a>
     </div>
   );
 };
