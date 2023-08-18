@@ -8,6 +8,9 @@ function Show({ fruit }) {
       {
         fruit.readyToEat ? "It's ready to eat!" : "Eww, yuck!"
       }
+      <br/>
+      <br/>
+      <a href="/fruits">Go Back to Fruits Main Page</a>
     </div>
   );
 };
