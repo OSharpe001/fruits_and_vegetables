@@ -1,12 +1,12 @@
-// import React from 'react';
+import React from 'react';
 
-function Show({ vegetables }) {
+function Show({ vegetable }) {
   // console.log("My fruit object: ", fruit);
   return (
     <div>
-      <h1>The {vegetables.name} is {vegetables.color}</h1>
+      <h1>The {vegetable.name} is {vegetable.color}</h1>
       {
-        vegetables.readyToEat ? "It's ready to eat!" : "Eww, yuck!"
+        vegetable.readyToEat ? "It's ready to eat!" : "Eww, yuck!"
       }
     </div>
   );

@@ -5,10 +5,11 @@ function Index({ vegetables }) {
     <div>
         {vegetables.map((vegetable, index) => {
             return (
-                <li key = {index}>The <a href={`/vegetables/${index}`}>{vegetable.name}</a> is {vegetable.color} <br/>
+                <li key = {index}>The <a href={`/vegetables/${index}`}>{vegetable.name}</a> is {vegetable.color}.<br/>
                   {
                     vegetable.readyToEat ? "it is ready to eat." : "It is not ready, yet."
                   }
+                  <br/><br/>
                 </li>
             )
         })}
