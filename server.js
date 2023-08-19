@@ -35,6 +35,18 @@ app.listen(port, (req, res) => {
 });
 
 // FRUIT ROUTES
+app.get("/", (req, res) => {
+    res.send(`
+        <h1>Here at the Fruits And Veggies Page, we have a wide assortment of healthy items.</h1>
+        <br/><br/>
+        <h2>What will you check first?</h2>
+        <br/><br/>
+        <a href="/fruits">Our Fruits Selection<a/>
+        <br/><br/>
+        <a href="/vegetables">Our Veggie Selection<a/>
+        `);
+});
+
 app.get("/fruits", (req, res) => {
     // res.send(fruits);
     res.render("fruits/Index", {

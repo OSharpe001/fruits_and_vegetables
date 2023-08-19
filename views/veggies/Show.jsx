@@ -10,7 +10,7 @@ function Show({ vegetable }) {
       }
       <br/>
       <br/>
-      <a href="/vegetables">Go Back to Vegetables Main Page</a>
+      <a href="/vegetables">Go Back to Vegetables Selection</a>
     </div>
   );
 };

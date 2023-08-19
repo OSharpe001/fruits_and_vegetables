@@ -1,8 +1,11 @@
 import React from 'react';
 
-function Index({ fruits }) {
+
+module.exports = function Index({ fruits }) {
+
   return (
     <div>
+      <h1>Our Selection of Fruits</h1>
         {fruits.map((fruit, index) => {
             return (
                 <li key = {index}>The <a href={`/fruits/${index}`}>{fruit.name}</a> is {fruit.color}.<br/>
@@ -15,8 +18,8 @@ function Index({ fruits }) {
         })}
         <br/><br/>
         <a href="/vegetables">Go To The Vegetables Page</a>
+        <br/><br/>
+        <a href="/">Back to Main Page</a>
     </div>
   );
 };
-
-module.exports = Index;
