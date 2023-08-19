@@ -10,31 +10,13 @@ const port = 5005;
 app.set("views", `${__dirname}/views`);
 app.set('view engine', 'jsx');
 app.engine('jsx', require('express-react-views').createEngine());
-// const fruits = ["apple", "banana", "pear"];
-// const fruits = [
-//     {
-//         name:'apple',
-//         color: 'red',
-//         readyToEat: true
-//     },
-//     {
-//         name:'pear',
-//         color: 'green',
-//         readyToEat: false
-//     },
-//     {
-//         name:'banana',
-//         color: 'yellow',
-//         readyToEat: true
-//     }
-// ];
 
 // LISTENER
 app.listen(port, (req, res) => {
     console.log(`This Express Server is brought to you, today, by Port ${port}.`);
 });
 
-// FRUIT ROUTES
+// INDEX PAGE
 app.get("/", (req, res) => {
     res.send(`
         <h1>Here at the Fruits And Veggies Page, we have a wide assortment of healthy items.</h1>
@@ -47,16 +29,14 @@ app.get("/", (req, res) => {
         `);
 });
 
+// FRUIT ROUTES
 app.get("/fruits", (req, res) => {
-    // res.send(fruits);
     res.render("fruits/Index", {
         fruits: fruits
     });
 });
 
 app.get("/fruits/:index", (req, res) => {
-    // console.log(req.params);
-    // res.send(fruits[req.params.index]);
     res.render("fruits/Show", { // SECOND PARAM MUST BE AN OBJECT
         fruit: fruits[req.params.index]
     });
