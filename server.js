@@ -24,7 +24,7 @@ app.listen(port, (req, res) => {
     console.log(`This Express Server is brought to you, today, by Port ${port}.`);
 });
 
-// INDEX PAGE
+// MAIN INDEX PAGE
 app.get("/", (req, res) => {
     res.send(`
         <h1>Here at the Fruits And Veggies Page, we have a wide assortment of healthy items.</h1>
