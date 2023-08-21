@@ -11,6 +11,14 @@ app.set("views", `${__dirname}/views`);
 app.set('view engine', 'jsx');
 app.engine('jsx', require('express-react-views').createEngine());
 
+// MIDDLEWARE
+app.use((req, res, next) => {
+    console.log("I run for all routes!")
+    next();
+});
+// THIS ALLOWS THE BODY OF A POST REQUEST
+app.use(express.urlencoded({extended: false}))
+
 // LISTENER
 app.listen(port, (req, res) => {
     console.log(`This Express Server is brought to you, today, by Port ${port}.`);
@@ -34,6 +42,22 @@ app.get("/fruits", (req, res) => {
     res.render("fruits/Index", {
         fruits: fruits
     });
+});
+
+// -"NEW" FRUITS ROUTE-
+app.get("/fruits/new", (req, res) => {
+    res.render("fruits/New")
+});
+// -  -
+// CREATE = POST ROUTE FOR FRUITS SECTION
+app.post("/fruits", (req,res) => {
+    // console.log("REQ.BODY: ", req.body);
+    req.body.readyToEat === "on" ? req.body.readyToEat = true : req.body.readyToEat = false;
+    fruits.push(req.body);
+    // console.log(`The fruits array is now ${fruits}.`);
+    console.log("REQ.BODY After Change: ", req.body);
+    // res.send("data recieved");
+    res.redirect("/fruits");
 });
 
 app.get("/fruits/:index", (req, res) => {
