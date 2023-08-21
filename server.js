@@ -73,6 +73,22 @@ app.get("/vegetables", (req, res) => {
     });
 });
 
+// -"NEW" VEGETABLE ROUTE-
+app.get("/vegetables/new", (req, res) => {
+    res.render("veggies/New")
+});
+// -  -
+// CREATE = POST ROUTE FOR VEGETABLE SECTION
+app.post("/vegetables", (req,res) => {
+    // console.log("REQ.BODY: ", req.body);
+    req.body.readyToEat === "on" ? req.body.readyToEat = true : req.body.readyToEat = false;
+    vegetables.push(req.body);
+    // console.log(`The vegetables array is now ${vegetables}.`);
+    console.log("REQ.BODY After Change: ", req.body);
+    // res.send("data recieved");
+    res.redirect("/vegetables");
+});
+
 app.get("/vegetables/:index", (req, res) => {
     res.render("veggies/Show", {
         vegetable: vegetables[req.params.index]
