@@ -46,7 +46,7 @@ app.get("/fruits", (req, res) => {
 
 // -"NEW" FRUITS ROUTE-
 app.get("/fruits/new", (req, res) => {
-    res.render("fruits/New")
+    res.render("fruits/New");
 });
 // -  -
 // CREATE = POST ROUTE FOR FRUITS SECTION
