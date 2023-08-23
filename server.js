@@ -2,28 +2,21 @@ require("dotenv").config();
 const mongoose = require('mongoose');
 
 const express = require("express");
-const fruits = require("./models/fruits.js");
-const vegetables = require("./models/vegetables.js");
 const Fruit = require("./models/fruit.js");
 const Veggie = require("./models/vegetable.js");
 
 const app = express();
 const port = 5005;
 
-mongoose.connect(process.env.MONGO_URI1, {
+mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     // useCreateIndex: true // *- DEPRICATED! -*
 });
 
-// mongoose.connect(process.env.MONGO_URI2, {
-// useNewUrlParser: true,
-// useUnifiedTopology: true,
-// });
-
-  mongoose.connection.once("open", () => {
-    console.log("connected to mongoDB")
-  });
+mongoose.connection.once("open", () => {
+console.log("connected to mongoDB")
+});
 
 // SETTING UP VIEW ENGINE
 app.set("views", `${__dirname}/views`);
@@ -32,11 +25,11 @@ app.engine('jsx', require('express-react-views').createEngine());
 
 // MIDDLEWARE
 app.use((req, res, next) => {
-    console.log("I run for all routes!")
+    console.log("I run for all routes!");
     next();
 });
 // THIS ALLOWS THE BODY OF A POST REQUEST
-app.use(express.urlencoded({extended: false}))
+app.use(express.urlencoded({extended: false}));
 
 // LISTENER
 app.listen(port, (req, res) => {
@@ -62,42 +55,27 @@ app.get("/fruits", async function(req, res) {
     res.render("fruits/Index", {
         fruits: foundFruits
     });
-    // res.render("fruits/Index", {
-    //     fruits: fruits
-    // });
 });
 
-// -"NEW" FRUITS ROUTE-
+// -FRUITS "NEW" ROUTE-
 app.get("/fruits/new", (req, res) => {
     res.render("fruits/New");
 });
 
 // CREATE = POST (ROUTE FOR FRUITS SECTION)
 app.post("/fruits", async (req,res) => {
-    // console.log("REQ.BODY: ", req.body);
     req.body.readyToEat === "on" ? req.body.readyToEat = true : req.body.readyToEat = false;
-    // fruits.push(req.body);
-    // console.log(`The fruits array is now ${fruits}.`);
     console.log("FRUIT REQ.BODY AFTER CHANGE: ", req.body);
-    // res.send("data recieved");
-    // res.redirect("/fruits");
-    // Fruit.create(req.body, (error, createdFruit) => {
-    //     res.send(createdFruit);
-    // });
-    // res.render("/fruits");
     const createdFruit = await Fruit.create(req.body);
     res.redirect("/fruits");
 });
 
 // FRUIT SHOW ROUTE
 app.get("/fruits/:id", async (req, res) => {
-    const oneFruit = await Fruit.findById(req.params.id)
+    const oneFruit = await Fruit.findById(req.params.id);
     res.render("fruits/Show", {
         fruit: oneFruit
     });
-    // res.render("fruits/Show", { // SECOND PARAM MUST BE AN OBJECT
-    //     fruit: fruits[req.params.index]
-    // });
 });
 
 
@@ -105,31 +83,19 @@ app.get("/fruits/:id", async (req, res) => {
 
 // VEGETABLE ROUTES
 app.get("/vegetables", async function(req, res) {
-    // res.render("veggies/Index", { // THIS REGARDS YOUR COMPONENTS FOLDER AND FILE.
-    //     vegetables: vegetables
-    // });
-
-    const foundVeggies = await Veggie.find({})
+    const foundVeggies = await Veggie.find({});
     res.render("veggies/Index", {
         vegetables: foundVeggies
     });
 });
 
-// -"NEW" VEGETABLE ROUTE-
+// -VEGGIES "NEW" ROUTE-
 app.get("/vegetables/new", (req, res) => {
-    res.render("veggies/New")
+    res.render("veggies/New");
 });
 
 // CREATE = POST (ROUTE FOR VEGETABLE SECTION)
 app.post("/vegetables", async (req,res) => {
-    // // console.log("REQ.BODY: ", req.body);
-    // req.body.readyToEat === "on" ? req.body.readyToEat = true : req.body.readyToEat = false;
-    // vegetables.push(req.body);
-    // // console.log(`The vegetables array is now ${vegetables}.`);
-    // console.log("VEGETABLES REQ.BODY AFTER CHANGE: ", req.body);
-    // // res.send("data received");
-    // res.redirect("/vegetables");
-
     req.body.readyToEat === "on" ? req.body.readyToEat = true : req.body.readyToEat = false;
     console.log("VEGETABLES REQ.BODY AFTER CHANGE: ", req.body);
     const createdVegetable = await Veggie.create(req.body);
@@ -138,11 +104,7 @@ app.post("/vegetables", async (req,res) => {
 
 // VEGETABLE SHOW ROUTE
 app.get("/vegetables/:id", async (req, res) => {
-    // res.render("veggies/Show", {
-    //     vegetable: vegetables[req.params.index]
-    // });
-
-    const oneVeggie = await Veggie.findById(req.params.id)
+    const oneVeggie = await Veggie.findById(req.params.id);
     res.render("veggies/Show", {
         vegetable: oneVeggie
     });

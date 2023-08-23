@@ -1,7 +1,6 @@
 import React from 'react';
 
 
-// module.exports = function Index({ vegetables }) {
 module.exports = function Index({ vegetables }) {
 
   return (
@@ -12,7 +11,6 @@ module.exports = function Index({ vegetables }) {
       <h1>Our Selection of Vegetables</h1>
         {vegetables.map((vegetable, index) => {
             return (
-                // <li key = {index}>The <a href={`/vegetables/${index}`}>{vegetable.name}</a> is {vegetable.color}.<br/>
                 <li key = {index}>The <a href={`/vegetables/${vegetable.id}`}>{vegetable.name}</a> is {vegetable.color}.<br/>
                   {
                     vegetable.readyToEat ? "it is ready to eat." : "It is not ready, yet."

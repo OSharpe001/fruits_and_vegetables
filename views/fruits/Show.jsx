@@ -1,7 +1,6 @@
-import React from 'react'
+import React from 'react';
 
 function Show({ fruit }) {
-  // console.log("My fruit object: ", fruit);
   return (
     <div>
       <h1>The {fruit.name} is {fruit.color}</h1>
