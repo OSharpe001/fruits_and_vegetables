@@ -5,15 +5,21 @@ const express = require("express");
 const fruits = require("./models/fruits.js");
 const vegetables = require("./models/vegetables.js");
 const Fruit = require("./models/fruit.js");
+const Veggie = require("./models/vegetable.js");
 
 const app = express();
 const port = 5005;
 
-mongoose.connect(process.env.MONGO_URI, {
+mongoose.connect(process.env.MONGO_URI1, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     // useCreateIndex: true // *- DEPRICATED! -*
-  });
+});
+
+// mongoose.connect(process.env.MONGO_URI2, {
+// useNewUrlParser: true,
+// useUnifiedTopology: true,
+// });
 
   mongoose.connection.once("open", () => {
     console.log("connected to mongoDB")
@@ -83,7 +89,7 @@ app.post("/fruits", async (req,res) => {
     res.redirect("/fruits");
 });
 
-// SHOW ROUTE
+// FRUIT SHOW ROUTE
 app.get("/fruits/:id", async (req, res) => {
     const oneFruit = await Fruit.findById(req.params.id)
     res.render("fruits/Show", {
@@ -98,9 +104,14 @@ app.get("/fruits/:id", async (req, res) => {
 
 
 // VEGETABLE ROUTES
-app.get("/vegetables", (req, res) => {
-    res.render("veggies/Index", { // THIS REGARDS YOUR COMPONENTS FOLDER AND FILE.
-        vegetables: vegetables
+app.get("/vegetables", async function(req, res) {
+    // res.render("veggies/Index", { // THIS REGARDS YOUR COMPONENTS FOLDER AND FILE.
+    //     vegetables: vegetables
+    // });
+
+    const foundVeggies = await Veggie.find({})
+    res.render("veggies/Index", {
+        vegetables: foundVeggies
     });
 });
 
@@ -108,20 +119,31 @@ app.get("/vegetables", (req, res) => {
 app.get("/vegetables/new", (req, res) => {
     res.render("veggies/New")
 });
-// -  -
-// CREATE = POST ROUTE FOR VEGETABLE SECTION
-app.post("/vegetables", (req,res) => {
-    // console.log("REQ.BODY: ", req.body);
+
+// CREATE = POST (ROUTE FOR VEGETABLE SECTION)
+app.post("/vegetables", async (req,res) => {
+    // // console.log("REQ.BODY: ", req.body);
+    // req.body.readyToEat === "on" ? req.body.readyToEat = true : req.body.readyToEat = false;
+    // vegetables.push(req.body);
+    // // console.log(`The vegetables array is now ${vegetables}.`);
+    // console.log("VEGETABLES REQ.BODY AFTER CHANGE: ", req.body);
+    // // res.send("data received");
+    // res.redirect("/vegetables");
+
     req.body.readyToEat === "on" ? req.body.readyToEat = true : req.body.readyToEat = false;
-    vegetables.push(req.body);
-    // console.log(`The vegetables array is now ${vegetables}.`);
     console.log("VEGETABLES REQ.BODY AFTER CHANGE: ", req.body);
-    // res.send("data recieved");
+    const createdVegetable = await Veggie.create(req.body);
     res.redirect("/vegetables");
 });
 
-app.get("/vegetables/:index", (req, res) => {
+// VEGETABLE SHOW ROUTE
+app.get("/vegetables/:id", async (req, res) => {
+    // res.render("veggies/Show", {
+    //     vegetable: vegetables[req.params.index]
+    // });
+
+    const oneVeggie = await Veggie.findById(req.params.id)
     res.render("veggies/Show", {
-        vegetable: vegetables[req.params.index]
+        vegetable: oneVeggie
     });
 });
