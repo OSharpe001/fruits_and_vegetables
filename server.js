@@ -1,10 +1,23 @@
+require("dotenv").config();
+const mongoose = require('mongoose');
+
 const express = require("express");
 const fruits = require("./models/fruits.js");
 const vegetables = require("./models/vegetables.js");
-
+const Fruit = require("./models/fruit.js");
 
 const app = express();
 const port = 5005;
+
+mongoose.connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    // useCreateIndex: true // *- DEPRICATED! -*
+  });
+
+  mongoose.connection.once("open", () => {
+    console.log("connected to mongoDB")
+  });
 
 // SETTING UP VIEW ENGINE
 app.set("views", `${__dirname}/views`);
@@ -38,33 +51,51 @@ app.get("/", (req, res) => {
 });
 
 // FRUIT ROUTES
-app.get("/fruits", (req, res) => {
+app.get("/fruits", async function(req, res) {
+    const foundFruits = await Fruit.find({})
     res.render("fruits/Index", {
-        fruits: fruits
+        fruits: foundFruits
     });
+    // res.render("fruits/Index", {
+    //     fruits: fruits
+    // });
 });
 
 // -"NEW" FRUITS ROUTE-
 app.get("/fruits/new", (req, res) => {
     res.render("fruits/New");
 });
-// -  -
-// CREATE = POST ROUTE FOR FRUITS SECTION
-app.post("/fruits", (req,res) => {
+
+// CREATE = POST (ROUTE FOR FRUITS SECTION)
+app.post("/fruits", async (req,res) => {
     // console.log("REQ.BODY: ", req.body);
     req.body.readyToEat === "on" ? req.body.readyToEat = true : req.body.readyToEat = false;
-    fruits.push(req.body);
+    // fruits.push(req.body);
     // console.log(`The fruits array is now ${fruits}.`);
-    console.log("REQ.BODY After Change: ", req.body);
+    console.log("FRUIT REQ.BODY AFTER CHANGE: ", req.body);
     // res.send("data recieved");
+    // res.redirect("/fruits");
+    // Fruit.create(req.body, (error, createdFruit) => {
+    //     res.send(createdFruit);
+    // });
+    // res.render("/fruits");
+    const createdFruit = await Fruit.create(req.body);
     res.redirect("/fruits");
 });
 
-app.get("/fruits/:index", (req, res) => {
-    res.render("fruits/Show", { // SECOND PARAM MUST BE AN OBJECT
-        fruit: fruits[req.params.index]
+// SHOW ROUTE
+app.get("/fruits/:id", async (req, res) => {
+    const oneFruit = await Fruit.findById(req.params.id)
+    res.render("fruits/Show", {
+        fruit: oneFruit
     });
+    // res.render("fruits/Show", { // SECOND PARAM MUST BE AN OBJECT
+    //     fruit: fruits[req.params.index]
+    // });
 });
+
+
+
 
 // VEGETABLE ROUTES
 app.get("/vegetables", (req, res) => {
@@ -84,7 +115,7 @@ app.post("/vegetables", (req,res) => {
     req.body.readyToEat === "on" ? req.body.readyToEat = true : req.body.readyToEat = false;
     vegetables.push(req.body);
     // console.log(`The vegetables array is now ${vegetables}.`);
-    console.log("REQ.BODY After Change: ", req.body);
+    console.log("VEGETABLES REQ.BODY AFTER CHANGE: ", req.body);
     // res.send("data recieved");
     res.redirect("/vegetables");
 });

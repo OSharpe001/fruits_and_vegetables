@@ -4,7 +4,7 @@ module.exports = function New() {
   return (
     <div>
         <h1>New Fruit Page</h1>
-        <form action="/vegetables" method="POST">
+        <form action="/fruits" method="POST">
             <label htmlFor="name">Name: </label>
             <input name="name" type="text" />
             <br/>
