@@ -1,5 +1,6 @@
 require("dotenv").config();
 const mongoose = require('mongoose');
+const methodOverride = require("method-override");
 
 const express = require("express");
 const Fruit = require("./models/fruit.js");
@@ -30,6 +31,8 @@ app.use((req, res, next) => {
 });
 // THIS ALLOWS THE BODY OF A POST REQUEST
 app.use(express.urlencoded({extended: false}));
+// THIS LETS YOU USE HTTP VERBS (PUT, DELETE,...) IN PLACES WHERE CLIENT DOESN'T SUPPORT IT
+app.use(methodOverride("_method"));
 
 // LISTENER
 app.listen(port, (req, res) => {
@@ -78,7 +81,27 @@ app.get("/fruits/:id", async (req, res) => {
     });
 });
 
+// FRUITS' EDIT METHOD
+app.get("/fruits/:id/edit", async (req, res) => {
+    const changingFruit = await Fruit.findById(req.params.id);
+    res.render("fruits/Edit", {
+        fruit: changingFruit
+    });
+});
 
+// FRUITS' UPDATE METHOD
+app.put("/fruits/:id", async (req, res) => {
+    req.body.readyToEat === "on" ? req.body.readyToEat = true : req.body.readyToEat = false;
+    const updatedFruit = await Fruit.findByIdAndUpdate(req.params.id, req.body);
+    res.redirect(`/fruits/${req.params.id}`);
+});
+
+// FRUITS' DELETE METHOD
+app.delete("/fruits/:id", async (req, res) => {
+    // res.send("deleting...");
+    await Fruit.findByIdAndRemove(req.params.id);
+    res.redirect("/fruits");
+});
 
 
 // VEGETABLE ROUTES
