@@ -1,9 +1,15 @@
 import React from 'react';
+import Default from "../layout/Default";
+
 
 module.exports = function New() {
+
+  const myStyle = {
+    textAlign: "center",
+  };
+
   return (
-    <div>
-        <h1>New Fruit Page</h1>
+    <Default bodyStyle={myStyle} title={`New Fruit Page`}>
         <form action="/fruits" method="POST">
             <label htmlFor="name">Name: </label>
             <input name="name" type="text" />
@@ -17,6 +23,6 @@ module.exports = function New() {
             <input type="submit" value="create fruit"/>
             <br/>
         </form>
-    </div>
+    </Default>
   );
 };

@@ -1,12 +1,11 @@
 import React from 'react';
 
-function Default({ title, children}) {
+module.exports = function Default({ title, children, bodyStyle}) {
   return (
     <div>
-      <h1>Default Page</h1>
       <html>
         <head><title>{title}</title></head>
-        <body>
+        <body style={bodyStyle}>
         <h1>{title}</h1>
         {children}
         </body>
@@ -14,5 +13,3 @@ function Default({ title, children}) {
     </div>
   );
 };
-
-module.exports = Default;

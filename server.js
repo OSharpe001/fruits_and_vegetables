@@ -16,7 +16,7 @@ mongoose.connect(process.env.MONGO_URI, {
 });
 
 mongoose.connection.once("open", () => {
-console.log("connected to mongoDB")
+console.log("connected to mongoDB");
 });
 
 // SETTING UP VIEW ENGINE
@@ -39,28 +39,20 @@ app.listen(port, (req, res) => {
     console.log(`This Express Server is brought to you, today, by Port ${port}.`);
 });
 
-// MAIN INDEX PAGE ***(NEED TO CREATE A REACT-TYPE INDEX PAGE AND RENDER IT LIKE LEO!)***
+// MAIN INDEX PAGE
 app.get("/", (req, res) => {
-    res.send(`
-        <h1>Here at the Fruits And Veggies Page, we have a wide assortment of healthy items.</h1>
-        <br/><br/>
-        <h2>What will you check first?</h2>
-        <br/><br/>
-        <a href="/fruits">Our Fruits Selection<a/>
-        <br/><br/>
-        <a href="/vegetables">Our Veggie Selection<a/>
-        `);
+    res.render("Home", {});
 });
 
-// FRUIT ROUTES
+// FRUIT LIST ROUTE
 app.get("/fruits", async function(req, res) {
-    const foundFruits = await Fruit.find({})
+    const foundFruits = await Fruit.find({});
     res.render("fruits/Index", {
         fruits: foundFruits
     });
 });
 
-// -FRUITS "NEW" ROUTE-
+// FRUITS "NEW" ROUTE
 app.get("/fruits/new", (req, res) => {
     res.render("fruits/New");
 });
@@ -98,17 +90,16 @@ app.put("/fruits/:id", async (req, res) => {
 
 // FRUITS' DELETE METHOD
 app.delete("/fruits/:id", async (req, res) => {
-    // res.send("deleting...");
     await Fruit.findByIdAndRemove(req.params.id);
     res.redirect("/fruits");
 });
 
 
-// VEGETABLE ROUTES
+// VEGETABLES LIST ROUTE
 app.get("/vegetables", async function(req, res) {
-    const foundVeggies = await Veggie.find({});
+    const foundVegetables = await Veggie.find({});
     res.render("veggies/Index", {
-        vegetables: foundVeggies
+        vegetables: foundVegetables
     });
 });
 
@@ -127,8 +118,29 @@ app.post("/vegetables", async (req,res) => {
 
 // VEGETABLE SHOW ROUTE
 app.get("/vegetables/:id", async (req, res) => {
-    const oneVeggie = await Veggie.findById(req.params.id);
+    const oneVegetable = await Veggie.findById(req.params.id);
     res.render("veggies/Show", {
-        vegetable: oneVeggie
+        vegetable: oneVegetable
     });
+});
+
+// VEGETABLES' EDIT METHOD
+app.get("/vegetables/:id/edit", async (req, res) => {
+    const changingVegetable = await Veggie.findById(req.params.id);
+    res.render("veggies/Edit", {
+        vegetable: changingVegetable
+    });
+});
+
+// VEGETABLES' UPDATE METHOD
+app.put("/vegetables/:id", async (req, res) => {
+    req.body.readyToEat === "on" ? req.body.readyToEat = true : req.body.readyToEat = false;
+    await Veggie.findByIdAndUpdate(req.params.id, req.body);
+    res.redirect(`/vegetables/${req.params.id}`);
+});
+
+// VEGETABLES' DELETE METHOD
+app.delete("/vegetables/:id", async (req, res) => {
+    await Veggie.findByIdAndRemove(req.params.id);
+    res.redirect("/vegetables");
 });

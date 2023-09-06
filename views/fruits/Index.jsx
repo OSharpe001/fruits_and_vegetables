@@ -11,18 +11,18 @@ module.exports = function Index({ fruits }) {
       </nav>
       <ul>
         {fruits.map((fruit, index) => {
-            return (
-                <li key = {index}>The <a href={`/fruits/${fruit.id}`}>{fruit.name}</a> is {fruit.color}.<br/>
-                  {
-                    fruit.readyToEat ? "it is ready to eat." : "It is not ready, yet."
-                  }
-                  <form  method ="POST" action={`/fruits/${fruit.id}?_method=DELETE`}>
-                  <input type="submit" value="DELETE" />
-                  </form>
-                  <a href={`/fruits/${fruit._id}/edit`}>Edit This Fruit</a>
-                  <br/><br/>
-                </li>
-            )
+          return (
+            <li key = {index}>The <a href={`/fruits/${fruit.id}`}>{fruit.name}</a> is {fruit.color}.<br/>
+              {
+                fruit.readyToEat ? "it is ready to eat." : "It is not ready, yet."
+              }
+              <form  method ="POST" action={`/fruits/${fruit.id}?_method=DELETE`}>
+                <input type="submit" value="DELETE" />
+              </form>
+              <a href={`/fruits/${fruit._id}/edit`}>Edit This Fruit</a>
+              <br/><br/>
+            </li>
+          )
         })}
       </ul>
       <br/><br/>
